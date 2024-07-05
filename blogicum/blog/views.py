@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import Http404
 
 posts = [
     {
@@ -45,7 +44,7 @@ posts = [
 ]
 
 posts_dict = {post["id"]: post for post in posts}
-""" словарь, в котором ключи - id, а значениями - словари из списка posts"""
+# словарь, в котором ключи - id, а значениями - словари из списка posts"""
 
 
 def index(request):
@@ -54,7 +53,6 @@ def index(request):
     Получает информацию из списка словарей posts,
     Где каждый словарь - отдельный пост и ифнормация о нём.
     """
-
     context = {"posts": posts}
     return render(request, "blog/index.html", context)
 
@@ -83,8 +81,6 @@ def post_detail(request, post_id):
 
 
 def category_posts(request, category_slug):
-    """
-    Функция для отображения постов выбранной категории.
-    """
+    """Функция для отображения постов выбранной категории."""
     context = {"category_slug": category_slug.strip("/")}
     return render(request, "blog/category.html", context)
