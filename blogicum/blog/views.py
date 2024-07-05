@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 
 posts = [
     {
@@ -43,21 +44,47 @@ posts = [
     },
 ]
 
+posts_dict = {post["id"]: post for post in posts}
+""" словарь, в котором ключи - id, а значениями - словари из списка posts"""
+
 
 def index(request):
-    template_name = "blog/index.html"
-    context = {'posts': posts}
-    return render(request, template_name, context)
+    """
+    Функция для отображения главной страницы.
+    Получает информацию из списка словарей posts,
+    Где каждый словарь - отдельный пост и ифнормация о нём.
+    """
+
+    context = {"posts": posts}
+    return render(request, "blog/index.html", context)
 
 
-def post_detail(request, id):
-    template_name = "blog/detail.html"
-    context = {"post": posts[id]}
-    return render(request, template_name, context)
+def post_detail(request, post_id):
+    """
+    Функция для отображения поста целиком.
+    Отображает словарь по его ID.
+    """
+    if post_id in posts_dict:
+        context = {"post": posts_dict[post_id]}
+        return render(request, "blog/detail.html", context)
+    else:
+        context = {
+            "post": {
+                "id": 999,
+                "location": "Нигде",
+                "date": "Никогда",
+                "category": "None",
+                "text": """Такого поста пока нет в нашем блоге :(
+                Но очень скоро Вы сможете его написать""",
+            }
+        }
+
+        return render(request, "blog/detail.html", context)
 
 
 def category_posts(request, category_slug):
-    template_name = "blog/category.html"
-    category_slug = request.path.strip('/')
-    context = {"category_slug": category_slug}
-    return render(request, template_name, context)
+    """
+    Функция для отображения постов выбранной категории.
+    """
+    context = {"category_slug": category_slug.strip("/")}
+    return render(request, "blog/category.html", context)
