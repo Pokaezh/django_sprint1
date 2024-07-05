@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <title> <h1>Заголовок </h1> </title>
+    <title> {% block title %}<h1> Заголовок </h1>{% endblock %} </title>
   </head>
   <body>
     {% include "includes/header.html" %}

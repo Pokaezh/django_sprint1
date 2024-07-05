@@ -52,13 +52,12 @@ def index(request):
 
 def post_detail(request, id):
     template_name = "blog/detail.html"
-    context = {"blog": posts[id]}
+    context = {"post": posts[id]}
     return render(request, template_name, context)
 
 
-def category_posts(request, pk):
+def category_posts(request, category_slug):
     template_name = "blog/category.html"
-    post = posts[pk]
-    category = post["category"]
-    context = {"category": category}
+    category_slug = request.path.strip('/')
+    context = {"category_slug": category_slug}
     return render(request, template_name, context)

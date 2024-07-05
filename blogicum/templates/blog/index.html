@@ -1,4 +1,3 @@
-
 <!-- index.html --> 
 
 {% extends "base.html" %}
@@ -9,7 +8,6 @@
 
   <div class="container py-5">
     <h1>Лента записей</h1>                        
-    <!-- Перебираем в цикле все посты -->
     {% for post in posts %}
     <hr>
     <article>
@@ -21,10 +19,9 @@
           Дата: {{ post.date }}
         </li>
         <li>
-          Категория: <a href="{% url 'blog:category_posts' forloop.counter0 %}">{{ post.category }}</a>
+          Категория: <a href="{% url 'blog:category_posts'  post.category  %}">{{ post.category }}</a>
         </li>
       </ul>          
-      <!-- Первые 10 слов -->
       <p>
         {{ post.text|truncatewords:10 }}
       </p>
