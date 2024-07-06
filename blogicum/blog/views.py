@@ -81,6 +81,6 @@ def post_detail(request, post_id):
 
 
 def category_posts(request, category_slug):
-    """Функция для отображения постов заданной категории.(В процессе разработки.)"""
+    """Функция для отображения постов заданной категории."""
     context = {"category_slug": category_slug.split("/")[-1]}
     return render(request, "blog/category.html", context)
