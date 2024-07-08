@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 
 posts = [
@@ -50,8 +51,10 @@ posts_dict = {post["id"]: post for post in posts}
 def index(request):
     """
     Функция для отображения главной страницы.
+
     Получает информацию из списка словарей posts,
-    Где каждый словарь - отдельный пост и ифнормация о нём.
+    Где каждый словарь - отдельный пост и информация о нём.
+    Возвращает отрендеренный HTML-шаблон.
     """
     context = {"posts": posts}
     return render(request, "blog/index.html", context)
@@ -60,27 +63,28 @@ def index(request):
 def post_detail(request, post_id):
     """
     Функция для отображения поста целиком.
-    Отображает словарь по его ID.
+
+    Принимает id  поста
+    Возвращает отрендеренный HTML-шаблон заданного поста.
+    Если задан несуществующий id - возвращает ошибку
     """
     if post_id in posts_dict:
         context = {"post": posts_dict[post_id]}
         return render(request, "blog/detail.html", context)
     else:
-        context = {
-            "post": {
-                "id": 999,
-                "location": "Нигде",
-                "date": "Никогда",
-                "category": "None",
-                "text": """Такого поста пока нет в нашем блоге :(
-                Но очень скоро Вы сможете его написать""",
-            }
-        }
-
-        return render(request, "blog/detail.html", context)
+        raise Http404(
+            f"Поста {post_id} пока нет в нашем блоге :( \
+Но очень скоро Вы сможете его написать"
+        )
 
 
 def category_posts(request, category_slug):
-    """Функция для отображения постов заданной категории."""
-    context = {"category_slug": category_slug.split("/")[-1]}
+    """
+    Функция для отображения постов заданной категории.
+
+    Принимает наименование категории,
+    Пока возврашает только шаблон с наименованием категории,
+    В будущем будет возращать список постов этой категории.
+    """
+    context = {"category_slug": category_slug}
     return render(request, "blog/category.html", context)
